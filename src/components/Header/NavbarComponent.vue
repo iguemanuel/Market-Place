@@ -8,7 +8,7 @@
       <Menu class="hover:text-gray-600" />
     </button>
 
-    <div class="text-xl font-bold">Pampa</div>
+    <div class="text-xl font-bold flex gap-1"><Store color="black" />Pampa</div>
 
     <div class="hidden md:flex items-center border border-gray-300 rounded-lg px-2 w-1/3">
       <Search color="gray" />
@@ -52,7 +52,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
-import { User, ShoppingBasket, Heart, Search, Menu } from 'lucide-vue-next'
+import { Store, User, ShoppingBasket, Heart, Search, Menu } from 'lucide-vue-next'
 
 // Controle do menu mobile
 const menuOpen = ref(false)
