@@ -1,25 +1,62 @@
 <template>
-  <nav class="flex justify-between items-center p-4 bg-white text-black w-full font-sans">
-    <div class="logo">
-      <h1 class="text-xl font-bold">Pampa Market</h1>
+  <nav
+    class="flex justify-between gap-10 items-center p-4 bg-white text-black w-full font-sans px-16"
+  >
+    <!-- Logo -->
+
+    <button class="md:hidden text-black hover:scale-110" @click="toggleMenu">
+      <Menu class="hover:text-gray-600" />
+    </button>
+
+    <div class="text-xl font-bold">Pampa</div>
+
+    <div class="hidden md:flex items-center border border-gray-300 rounded-lg px-2 w-1/3">
+      <Search color="gray" />
+      <input type="text" placeholder="Buscar produtos" class="p-2 w-full outline-none" />
     </div>
-    <div>
-      <input type="text" placeholder="Buscar produtos" class="p-2 rounded-lg border" />
+
+    <div class="hidden md:flex">
+      <ul class="flex space-x-5 gap-3">
+        <li><RouterLink to="/" class="hover:text-gray-600">Home</RouterLink></li>
+        <li><RouterLink to="/" class="hover:text-gray-600">Sobre</RouterLink></li>
+        <li><RouterLink to="/" class="hover:text-gray-600">Contato</RouterLink></li>
+      </ul>
     </div>
-    <ul class="flex space-x-4 mr-4">
-      <li><RouterLink to="/">Home</RouterLink></li>
-      <li><RouterLink to="/">Sobre</RouterLink></li>
-      <li><RouterLink to="/">Contato</RouterLink></li>
-      <div class="flex ml-4 space-x-4">
-        <User />
-        <ShoppingBasket />
-        <Heart />
-      </div>
-    </ul>
+
+    <div class="hidden md:flex space-x-4 gap-3">
+      <Heart class="cursor-pointer hover:text-gray-600" />
+      <ShoppingBasket class="cursor-pointer hover:text-gray-600" />
+      <User class="cursor-pointer hover:text-gray-600" />
+    </div>
+
+    <!-- Menu Mobile -->
+    <div class="md:hidden flex gap-3 space-x-4">
+      <Heart class="cursor-pointer hover:text-gray-600" />
+      <ShoppingBasket class="cursor-pointer hover:text-gray-600" />
+      <User class="cursor-pointer hover:text-gray-600" />
+    </div>
+
+    <div
+      v-if="menuOpen"
+      class="absolute top-16 left-0 w-full bg-white shadow-lg flex flex-col items-center text-center alig py-4 md:hidden"
+    >
+      <ul class="space-y-4">
+        <li><RouterLink to="/" class="block">Home</RouterLink></li>
+        <li><RouterLink to="/" class="block">Sobre</RouterLink></li>
+        <li><RouterLink to="/" class="block">Contato</RouterLink></li>
+      </ul>
+    </div>
   </nav>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
-import { User, ShoppingBasket, Heart } from 'lucide-vue-next'
+import { User, ShoppingBasket, Heart, Search, Menu } from 'lucide-vue-next'
+
+// Controle do menu mobile
+const menuOpen = ref(false)
+const toggleMenu = () => {
+  menuOpen.value = !menuOpen.value
+}
 </script>
