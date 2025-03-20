@@ -2,6 +2,10 @@
 import { login } from '@/services/authService.ts'
 import type { User } from '@/interfaces/Auth.ts'
 import { ref } from 'vue'
+import { RouterLink } from 'vue-router'
+import { useAuthStore } from '@/store/authStore'
+
+const authStore = useAuthStore()
 
 const user = ref<User>({
   email: '',
@@ -11,6 +15,7 @@ const user = ref<User>({
 const handleLogin = async () => {
   try {
     const response = await login(user.value)
+    authStore.setUser(user.value)
   } catch (error) {
     console.log('Erro ao logar ' + error)
   }
@@ -21,8 +26,8 @@ const handleLogin = async () => {
   <div class="grid sm:grid-cols-1 md:grid-cols-2">
     <div class="flex items-center justify-center h-screen bg-white">
       <div class="text-black p-8 rounded-lg w-3/4">
-        <div class="login-title">
-          <h1 class="text-3xl mb-2 font-bold">Bem vindo!</h1>
+        <div class="login-title text-center">
+          <h1 class="text-3xl mb-4 font-bold">Bem vindo!</h1>
           <p class="text-sm/6 text-gray-500 mb-2">Faça login para acessar</p>
         </div>
         <form action="">
@@ -88,7 +93,9 @@ const handleLogin = async () => {
         </div>
       </div>
     </div>
-    <div class=""></div>
+    <div class="md:flex items-center justify-center sm:hidden">
+      <img src="../assets/img/market-black.svg" alt="Market" class="w-2/3 h-2/3 object-cover" />
+    </div>
   </div>
 </template>
 
