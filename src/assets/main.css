@@ -32,3 +32,11 @@ a,
     place-items: center;
   }
 }
+
+.mt-2 {
+  margin-top: calc(var(--spacing) * 2) /* 0.5rem = 8px */;
+}
+
+.mb-2 {
+  margin-bottom: calc(var(--spacing) * 2) /* 0.5rem = 8px */;
+}

@@ -44,6 +44,9 @@
         </div>
       </div>
     </div>
+    <div class="bg-gray-200 w-full py-4 text-center text-gray-500">
+      <p>&copy; 2025 - Todos os direitos reservados</p>
+    </div>
   </footer>
 </template>
 
