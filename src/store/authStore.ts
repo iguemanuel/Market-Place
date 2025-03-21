@@ -5,18 +5,12 @@ export const useAuthStore = defineStore('auth', {
   state: () => ({
     user: {} as User,
     token: '',
-    role: '',
   }),
 
   actions: {
-    setUser(user: User) {
-      this.user = user
-    },
-    setToken(token: string) {
-      this.token = token
-    },
-    setRole(role: string) {
-      this.role = role
+    setUser(payload: { user: User; token: string }) {
+      this.user = payload.user
+      this.token = payload.token
     },
   },
 })

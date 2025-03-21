@@ -8,14 +8,29 @@ import { useAuthStore } from '@/store/authStore'
 const authStore = useAuthStore()
 
 const user = ref<User>({
+  id: 0,
   email: '',
   password: '',
+  role: '',
 })
 
 const handleLogin = async () => {
   try {
     const response = await login(user.value)
-    authStore.setUser(user.value)
+
+    if (response?.token && response?.userData) {
+      authStore.setUser({
+        token: response.token,
+        user: {
+          id: response.userData.id,
+          email: response.userData.email,
+          role: response.userData.role,
+          password: response.userData.password,
+        },
+      })
+    }
+
+    console.log(authStore.user)
   } catch (error) {
     console.log('Erro ao logar ' + error)
   }
@@ -28,9 +43,9 @@ const handleLogin = async () => {
       <div class="text-black p-8 rounded-lg w-3/4">
         <div class="login-title text-center">
           <h1 class="text-3xl mb-4 font-bold">Bem vindo!</h1>
-          <p class="text-sm/6 text-gray-500 mb-2">Faça login para acessar</p>
+          <p class="text-sm text-gray-500 mb-2">Faça login para acessar</p>
         </div>
-        <form action="">
+        <form @submit.prevent="handleLogin">
           <label for="email" class="block text-sm/6 font-medium text-gray-900">Email</label>
           <div class="mb-2">
             <div
@@ -67,7 +82,7 @@ const handleLogin = async () => {
 
           <button
             class="rounded-md cursor-pointer mt-2 w-full bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-            type="button"
+            type="submit"
             @click="handleLogin"
           >
             Entrar
@@ -86,15 +101,19 @@ const handleLogin = async () => {
           </button>
         </form>
         <div>
-          <p class="text-sm/6 text-gray-500 mt-2">
+          <div class="text-sm/6 text-gray-500 mt-2">
             Não tem uma conta?
-            <a class="text-slate-800"><RouterLink to="register">Cadastre-se</RouterLink></a>
-          </p>
+            <p class="text-slate-800 inline"><RouterLink to="register">Cadastre-se</RouterLink></p>
+          </div>
         </div>
       </div>
     </div>
-    <div class="md:flex items-center justify-center sm:hidden">
-      <img src="../assets/img/market-black.svg" alt="Market" class="w-2/3 h-2/3 object-cover" />
+    <div class="md:flex items-center justify-center">
+      <img
+        src="../assets/img/market-black.svg"
+        alt="Market"
+        class="w-2/3 h-2/3 object-cover md:flex sm:hidden"
+      />
     </div>
   </div>
 </template>
