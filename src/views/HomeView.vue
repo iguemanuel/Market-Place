@@ -6,7 +6,12 @@ import NavbarComponent from '@/components/Header/NavbarComponent.vue'
 <template>
   <div class="w-full">
     <NavbarComponent />
-    <div class="teste h-52 w-full">Testando</div>
+    <img
+      src="../assets/img/banner-black-friday.png"
+      alt="Banner Black Friday"
+      class="w-full h-1/6 object-cover"
+      style="height: 50%; width: 50%"
+    />
     <FooterComponent />
   </div>
 </template>

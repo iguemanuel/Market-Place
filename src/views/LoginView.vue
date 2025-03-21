@@ -108,11 +108,11 @@ const handleLogin = async () => {
         </div>
       </div>
     </div>
-    <div class="md:flex items-center justify-center">
+    <div class="flex items-center justify-center">
       <img
         src="../assets/img/market-black.svg"
         alt="Market"
-        class="w-2/3 h-2/3 object-cover md:flex sm:hidden"
+        class="w-2/3 h-2/3 md:flex sm:hidden"
       />
     </div>
   </div>

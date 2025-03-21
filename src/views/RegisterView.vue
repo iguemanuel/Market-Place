@@ -1,4 +1,25 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { register } from '@/services/authService.ts'
+import type { User } from '@/interfaces/Auth.ts'
+import { ref } from 'vue'
+import { RouterLink } from 'vue-router'
+
+const user = ref<User>({
+  email: '',
+  password: '',
+  name: '',
+})
+
+const handleRegister = async () => {
+  try {
+    const response = await register(user.value)
+
+    console.log(response)
+  } catch (error) {
+    console.log('Erro ao registrar ' + error)
+  }
+}
+</script>
 
 <template>
   <div class="grid sm:grid-cols-1 md:grid-cols-2">
@@ -100,14 +121,23 @@
           >
             Criar Conta
           </button>
+          <button
+            class="flex items-center justify-center gap-2 rounded-md mt-2 w-full bg-white py-2 px-4 border border-gray-300 text-center text-sm text-gray-700 transition-all shadow-md hover:shadow-lg focus:bg-gray-100 focus:shadow-none active:bg-gray-200 hover:bg-gray-100 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none cursor-pointer"
+            type="button"
+          >
+            <img
+              src="https://www.svgrepo.com/show/355037/google.svg"
+              alt="Google Logo"
+              class="w-5 h-5"
+            />
+            Entrar com o Google
+          </button>
         </form>
 
         <!-- Link para Login -->
         <div class="mt-2">
-          <p class="text-sm text-gray-500">
-            Já tem uma conta?
-            <RouterLink to="/login" class="text-slate-800">Faça o login</RouterLink>
-          </p>
+          <p class="text-sm text-gray-500 inline">Já tem uma conta?</p>
+          <RouterLink to="/login" class=" ">Faça o login</RouterLink>
         </div>
       </div>
     </div>
