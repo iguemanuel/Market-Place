@@ -110,7 +110,7 @@ const handleLogin = async () => {
     </div>
     <div class="flex items-center justify-center">
       <img
-        src="../assets/img/market-black.svg"
+        src="../assets/svg/market-black.svg"
         alt="Market"
         class="w-2/3 h-2/3 md:flex sm:hidden"
       />

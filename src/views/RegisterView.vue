@@ -13,6 +13,7 @@ const user = ref<User>({
 const handleRegister = async () => {
   try {
     const response = await register(user.value)
+    console.log(response)
 
     console.log(response)
   } catch (error) {
@@ -102,7 +103,7 @@ const handleRegister = async () => {
           >
           <div class="mb-2">
             <div
-              class="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600"
+              class="flex items-center rounded-md bg-white pl-3 outline-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600"
             >
               <input
                 placeholder="********"
@@ -144,7 +145,7 @@ const handleRegister = async () => {
 
     <!-- Imagem no lado direito (apenas para dispositivo maiores) -->
     <div class="md:flex items-center justify-center sm:hidden">
-      <img src="../assets/img/market-place2.svg" alt="Market" class="w-2/3 h-2/3" />
+      <img src="../assets/svg/market-place2.svg" alt="Market" class="w-2/3 h-2/3" />
     </div>
   </div>
 </template>

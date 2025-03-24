@@ -1,16 +1,10 @@
 <script setup lang="ts">
 import FooterComponent from '@/components/Footer/FooterComponent.vue'
 import NavbarComponent from '@/components/Header/NavbarComponent.vue'
+import CardComponent from '@/components/Main/CardComponent.vue'
 import CarouselComponent from '@/components/Main/CarouselComponent.vue'
 
 const products = [
-  {
-    id: 1,
-    name: 'Produto 1',
-    price: 29.99,
-    image: '/src/assets/img/banner-black-friday.png',
-    category: 'Categoria 1',
-  },
   {
     id: 3,
     name: 'Produto 2',
@@ -32,7 +26,10 @@ const products = [
   <div class="w-full">
     <NavbarComponent />
     <CarouselComponent :products="products" />
-
+    <div class="container-cards">
+      <h1>Produtos</h1>
+      <CardComponent />
+    </div>
     <FooterComponent />
   </div>
 </template>

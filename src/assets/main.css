@@ -1,8 +1,5 @@
 @import './base.css';
 @import 'tailwindcss';
-@import 'flowbite/src/themes/default';
-@plugin "flowbite/plugin";
-@source "../node_modules/flowbite";
 
 #app {
   margin: 0 auto;
