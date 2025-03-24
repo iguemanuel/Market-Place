@@ -11,6 +11,13 @@ export default defineConfig({
   server: {
     open: true,
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: '@import "flowbite";',
+      },
+    },
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
