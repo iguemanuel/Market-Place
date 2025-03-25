@@ -1,21 +1,53 @@
+<script setup>
+import { computed } from 'vue'
+import { api } from '@/services/apiConfig'
+
+const baseURL = 'http://34.138.111.33:8000'
+
+const props = defineProps({
+  product: Object,
+})
+
+const hasDiscount = computed(() => props.product.discounts && props.product.discounts.length > 0)
+
+const formattedPrice = computed(() => {
+  if (hasDiscount.value) {
+    const discount = props.product.discounts[0].percentage || 0 // Exemplo: desconto como percentual
+    return (parseFloat(props.product.price) * (1 - discount / 100)).toFixed(2)
+  }
+  return parseFloat(props.product.price).toFixed(2)
+})
+
+const originalPrice = computed(() => parseFloat(props.product.price).toFixed(2))
+</script>
+
 <template>
   <div class="max-w-sm rounded-lg overflow-hidden shadow-lg bg-white border border-gray-200">
+    <!-- Selo de Desconto -->
+    <div
+      v-if="hasDiscount"
+      class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded"
+    >
+      Desconto
+    </div>
+
     <!-- Imagem do Produto -->
-    <div class="w-full bg-amber-100 duration-500 hover:bg-amber-200">
-      <img :src="product.image_path" alt="Produto" class="w-full h-52 object-cover duration-500" />
+    <div class="w-full bg-gray-100 hover:bg-gray-200 transition">
+      <img :src="baseURL + product.image_path" alt="Produto" class="w-full h-52 object-cover" />
     </div>
 
     <div class="p-4">
       <!-- Nome do Produto -->
       <h2 class="text-2xl font-bold text-gray-800 truncate">{{ product.name }}</h2>
 
-      <!-- Categoria do Produto -->
-      <p class="text-sm text-gray-500 mt-1">{{ product.category.name }}</p>
+      <!-- Categoria -->
+      <p class="text-sm text-gray-500 mt-1">Categoria: {{ product.category.name }}</p>
 
-      <!-- Preço do Produto -->
-      <p class="text-lg font-semibold text-gray-900 mt-2">
-        ${{ parseFloat(product.price).toFixed(2) }}
-      </p>
+      <!-- Preço -->
+      <div class="flex items-center gap-2 mt-2">
+        <p class="text-lg font-semibold text-gray-900">${{ formattedPrice }}</p>
+        <p v-if="hasDiscount" class="text-sm text-red-500 line-through">${{ originalPrice }}</p>
+      </div>
 
       <!-- Estoque -->
       <p class="text-sm text-gray-500 mt-1">
@@ -23,7 +55,7 @@
       </p>
 
       <!-- Descrição da Categoria -->
-      <p class="text-sm text-gray-400 mt-2">Categoria: {{ product.category.description }}</p>
+      <p class="text-sm text-gray-400 mt-2">{{ product.category.description }}</p>
     </div>
 
     <div class="flex justify-between p-4">
@@ -40,26 +72,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import { ref } from 'vue'
-
-// Dados do produto simulados (pode ser passado como prop ou obtido de uma API)
-const product = ref({
-  id: 11,
-  name: 'Teste',
-  price: '1.00',
-  stock: 1,
-  image_path: '/src/assets/img/headset.png',
-  category: {
-    name: 'Computers',
-    description: 'The best computers are only here.',
-    id: 1,
-    user_id: 1,
-  },
-})
-</script>
-
-<style scoped>
-/* Estilos adicionais podem ser colocados aqui */
-</style>

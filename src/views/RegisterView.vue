@@ -30,7 +30,7 @@ const handleRegister = async () => {
           <h1 class="text-3xl !mb-4 font-bold">Registre-se</h1>
           <p class="text-sm text-gray-500 mb-2">Crie sua conta agora!</p>
         </div>
-        <form>
+        <form @submit.prevent="handleRegister">
           <!-- Campo de Nome -->
           <label for="name" class="block text-sm font-medium text-gray-900">Nome</label>
           <div class="mb-2">
@@ -42,6 +42,7 @@ const handleRegister = async () => {
                 type="text"
                 name="name"
                 id="name"
+                v-model="user.name"
                 class="block min-w-0 grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm"
               />
             </div>
@@ -58,6 +59,7 @@ const handleRegister = async () => {
                 type="email"
                 name="email"
                 id="email"
+                v-model="user.email"
                 class="block min-w-0 grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm"
               />
             </div>
@@ -92,6 +94,7 @@ const handleRegister = async () => {
                 type="password"
                 name="password"
                 id="password"
+                v-model="user.password"
                 class="block min-w-0 grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm"
               />
             </div>
@@ -124,7 +127,7 @@ const handleRegister = async () => {
           </button>
           <button
             class="flex items-center justify-center gap-2 rounded-md mt-2 w-full bg-white py-2 px-4 border border-gray-300 text-center text-sm text-gray-700 transition-all shadow-md hover:shadow-lg focus:bg-gray-100 focus:shadow-none active:bg-gray-200 hover:bg-gray-100 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none cursor-pointer"
-            type="button"
+            type="submit"
           >
             <img
               src="https://www.svgrepo.com/show/355037/google.svg"

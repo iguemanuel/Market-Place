@@ -2,7 +2,7 @@
 import { ref, onMounted, watch } from 'vue'
 import { ChevronLeft, ChevronRight } from 'lucide-vue-next'
 
-interface Product {
+interface Banner {
   id: number
   name: string
   price: number
@@ -10,23 +10,21 @@ interface Product {
   category: string
 }
 
-interface ProductCarouselProps {
-  products: Product[]
+interface BannerCarouselProps {
+  banner: Banner[]
 }
 
-// Definir valor padrão para props.products se não for passado
-const props = defineProps<ProductCarouselProps>()
-const products = props.products || [] // Caso não tenha produtos, usamos um array vazio.
+const props = defineProps<BannerCarouselProps>()
+const banner = props.banner || [] // Caso não tenha produtos, usamos um array vazio.
 
 const currentIndex = ref(0)
 
-// Auto-avançar o carrossel se houver produtos
 let interval: ReturnType<typeof setInterval> | null = null
 
 const startAutoSlide = () => {
-  if (products.length > 0) {
+  if (banner.length > 0) {
     interval = setInterval(() => {
-      currentIndex.value = (currentIndex.value + 1) % products.length
+      currentIndex.value = (currentIndex.value + 1) % banner.length
     }, 5000)
   }
 }
@@ -35,9 +33,8 @@ onMounted(() => {
   startAutoSlide()
 })
 
-// Reinicia o slide quando a lista de produtos muda
 watch(
-  () => products,
+  () => banner,
   () => {
     currentIndex.value = 0
     if (interval) clearInterval(interval)
@@ -46,36 +43,34 @@ watch(
 )
 
 const goToPrevious = () => {
-  if (products.length > 0) {
-    currentIndex.value = (currentIndex.value - 1 + products.length) % products.length
+  if (banner.length > 0) {
+    currentIndex.value = (currentIndex.value - 1 + banner.length) % banner.length
   }
 }
 
 const goToNext = () => {
-  if (products.length > 0) {
-    currentIndex.value = (currentIndex.value + 1) % products.length
+  if (banner.length > 0) {
+    currentIndex.value = (currentIndex.value + 1) % banner.length
   }
 }
 </script>
 
 <template>
-  <div v-if="products.length" class="relative rounded-xl overflow-hidden">
+  <div v-if="banner.length" class="relative rounded-xl overflow-hidden">
     <div class="aspect-[16/9] md:aspect-[21/9] relative">
       <img
-        :src="products[currentIndex].image || '/placeholder.svg'"
-        :alt="products[currentIndex].name"
+        :src="banner[currentIndex].image || '/placeholder.svg'"
+        :alt="banner[currentIndex].name"
         class="object-cover w-full h-full"
       />
       <div
         class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-6"
       >
         <h3 class="text-2xl md:text-3xl font-bold text-white mb-2">
-          {{ products[currentIndex].name }}
+          {{ banner[currentIndex].name }}
         </h3>
-        <p class="text-white/90 mb-1">{{ products[currentIndex].category }}</p>
-        <p class="text-xl font-semibold text-white">
-          ${{ products[currentIndex].price.toFixed(2) }}
-        </p>
+        <p class="text-white/90 mb-1">{{ banner[currentIndex].category }}</p>
+        <p class="text-xl font-semibold text-white">${{ banner[currentIndex].price.toFixed(2) }}</p>
       </div>
     </div>
 
@@ -97,7 +92,7 @@ const goToNext = () => {
 
     <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
       <button
-        v-for="(product, index) in products"
+        v-for="(product, index) in banner"
         :key="index"
         class="w-2 h-2 rounded-full"
         :class="{ 'bg-white': index === currentIndex, 'bg-white/50': index !== currentIndex }"
