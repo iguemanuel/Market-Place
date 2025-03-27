@@ -9,7 +9,7 @@ export const login = async (user: User) => {
 
     return { token, userData }
   } catch (error) {
-    console.error('Erro ao fazer login ' + error)
+    throw new Error('Erro ao fazer login ' + error)
   }
 }
 

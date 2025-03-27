@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import { register } from '@/services/authService.ts'
-import type { User } from '@/interfaces/Auth.ts'
 import { ref } from 'vue'
+import { register } from '@/services/authService.ts'
+import { useToast } from 'vue-toastification'
 import { RouterLink } from 'vue-router'
+import type { User } from '@/interfaces/Auth.ts'
+
+const toast = useToast()
 
 const user = ref<User>({
   email: '',
@@ -10,14 +13,22 @@ const user = ref<User>({
   name: '',
 })
 
+const confirmEmail = ref('')
+const confirmPassword = ref('')
+
 const handleRegister = async () => {
+  if (user.value.email !== confirmEmail.value) {
+    return toast.error('Os e-mails não coincidem')
+  }
+  if (user.value.password !== confirmPassword.value) {
+    return toast.error('As senhas não coincidem')
+  }
+
   try {
     const response = await register(user.value)
     console.log(response)
-
-    console.log(response)
   } catch (error) {
-    console.log('Erro ao registrar ' + error)
+    console.error('Erro ao registrar:', error)
   }
 }
 </script>
@@ -35,7 +46,7 @@ const handleRegister = async () => {
           <label for="name" class="block text-sm font-medium text-gray-900">Nome</label>
           <div class="mb-2">
             <div
-              class="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600"
+              class="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-gray-200"
             >
               <input
                 placeholder="Seu nome completo"
@@ -52,7 +63,7 @@ const handleRegister = async () => {
           <label for="email" class="block text-sm font-medium text-gray-900">Email</label>
           <div class="mb-2">
             <div
-              class="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600"
+              class="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-gray-200"
             >
               <input
                 placeholder="email@example.com"
@@ -71,9 +82,10 @@ const handleRegister = async () => {
           >
           <div class="mb-2">
             <div
-              class="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600"
+              class="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-gray-200"
             >
               <input
+                v-model="confirmEmail"
                 placeholder="email@example.com"
                 type="email"
                 name="confirmEmail"
@@ -87,7 +99,7 @@ const handleRegister = async () => {
           <label for="password" class="block text-sm font-medium text-gray-900">Senha</label>
           <div class="mb-2">
             <div
-              class="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600"
+              class="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-gray-200"
             >
               <input
                 placeholder="********"
@@ -106,9 +118,10 @@ const handleRegister = async () => {
           >
           <div class="mb-2">
             <div
-              class="flex items-center rounded-md bg-white pl-3 outline-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600"
+              class="flex items-center rounded-md bg-white pl-3 outline-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-gray-200"
             >
               <input
+                v-model="confirmPassword"
                 placeholder="********"
                 type="password"
                 name="confirmPassword"

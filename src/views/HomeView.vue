@@ -1,30 +1,18 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
+import { useAuthStore } from '@/store/authStore'
+
 import FooterComponent from '@/components/Footer/FooterComponent.vue'
 import NavbarComponent from '@/components/Header/NavbarComponent.vue'
 import CarouselComponent from '@/components/Main/CarouselComponent.vue'
 import CardComponent from '@/components/Main/CardComponent.vue'
+
 import { produtos } from '@/services/httpService'
 import { Banners } from '@/db/Banners'
-import { Product } from '@/interfaces/Product'
+import type { Product } from '@/interfaces/Product'
 
+const authStore = useAuthStore()
 const banners = Banners
-
-interface Product {
-  id: number
-  name: string
-  price: string
-  image_path: string
-  category: {
-    name: string
-    description: string
-    id: number
-  }
-  image: string
-  stock: number
-  discounts?: []
-}
-
 const products = ref<Product[]>([])
 const loading = ref(true)
 

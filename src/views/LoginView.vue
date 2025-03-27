@@ -4,8 +4,11 @@ import type { User } from '@/interfaces/Auth.ts'
 import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useAuthStore } from '@/store/authStore'
+import { useToast } from 'vue-toastification'
+import router from '@/router'
 
 const authStore = useAuthStore()
+const toast = useToast()
 
 const user = ref<User>({
   id: 0,
@@ -21,18 +24,16 @@ const handleLogin = async () => {
     if (response?.token && response?.userData) {
       authStore.setUser({
         token: response.token,
-        user: {
-          id: response.userData.id,
-          email: response.userData.email,
-          role: response.userData.role,
-          password: response.userData.password,
-        },
+        user: response.userData,
       })
+      toast.success('Login efetuado com sucesso!')
+      router.push('/')
     }
 
     console.log(authStore.user)
   } catch (error) {
     console.log('Erro ao logar ' + error)
+    toast.error('Erro ao logar, tente novamente!')
   }
 }
 </script>
@@ -83,7 +84,6 @@ const handleLogin = async () => {
           <button
             class="rounded-md cursor-pointer mt-2 w-full bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
             type="submit"
-            @click="handleLogin"
           >
             Entrar
           </button>
