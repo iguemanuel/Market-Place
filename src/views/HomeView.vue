@@ -8,10 +8,12 @@ import CarouselComponent from '@/components/Main/CarouselComponent.vue'
 import CardComponent from '@/components/Main/CardComponent.vue'
 
 import { produtos } from '@/services/httpService'
-import type { Product } from '@/interfaces/Product'
+import type { Product, Category } from '@/interfaces/Product'
+import CategoryComponent from '@/components/Main/CategoryComponent.vue'
 
 const authStore = useAuthStore()
 const products = ref<Product[]>([])
+const categories = ref<string[]>([])
 const loading = ref(true)
 
 onMounted(async () => {
@@ -19,6 +21,7 @@ onMounted(async () => {
     const data = await produtos()
     if (Array.isArray(data)) {
       products.value = data
+      categories.value = Array.from(new Set(data.map((product) => product.category?.name)))
     }
   } catch (error) {
     console.error('Erro ao carregar os produtos:', error)
@@ -46,22 +49,20 @@ const categorizedProducts = computed(() => {
   <div class="w-full">
     <NavbarComponent />
     <CarouselComponent />
-
-    <div class="container"></div>
-    <div class="container-cards pl-4 pr-4">
-      <h1>Produtos</h1>
-
-      <div v-if="products.length > 0">
-        <div v-for="(items, category) in categorizedProducts" :key="category" class="mb-6">
-          <h2 class="text-xl font-bold mt-6">{{ category }}</h2>
-          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            <CardComponent v-for="product in items" :key="product.id" :product="product" />
-          </div>
+    <div>
+      <h2 class="text-2xl font-bold">Categorias</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div v-for="category in categories" :key="category" class="mb-4">
+          <CategoryComponent :category="category" />
         </div>
       </div>
+    </div>
 
-      <div v-else-if="loading" class="text-center">Carregando produtos...</div>
-      <div v-else class="text-center text-gray-500">Nenhum produto encontrado.</div>
+    <div v-for="(items, category) in categorizedProducts" :key="category" :id="category">
+      <h2>{{ category }}</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <CardComponent v-for="product in items" :key="product.id" :product="product" />
+      </div>
     </div>
 
     <FooterComponent />

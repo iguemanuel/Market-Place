@@ -1,31 +1,34 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
+import { defineProps } from 'vue'
 
-interface Props {
-  category: {
-    name: string
-    description: string
-    image?: string
-  }
-}
-
-const props = defineProps<Props>()
-const router = useRouter()
-
-const goToCategory = () => {
-  router.push({ name: 'Category', params: { category: props.category.name } })
-}
+const props = defineProps<{
+  category: string
+}>()
 </script>
+
 <template>
-  <div
-    class="cursor-pointer rounded-lg shadow-lg p-4 text-center transition-transform transform hover:scale-105 bg-white"
-    @click="goToCategory"
-  >
-    <img
-      :src="category.image || '/placeholder.jpg'"
-      :alt="category.name"
-      class="w-full h-32 object-cover rounded-md"
-    />
-    <h3 class="mt-2 font-bold text-lg">{{ category.name }}</h3>
-  </div>
+  <!-- Envolvendo a div inteira com o link -->
+  <a :href="'#' + props.category" class="card-category">
+    <div>
+      <h2 class="category-title">{{ props.category }}</h2>
+    </div>
+  </a>
 </template>
+
+<style scoped>
+.card-category {
+  display: block; /* Faz o link ocupar o espaço da div inteira */
+  padding: 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  background-color: #f7fafc;
+  text-decoration: none; /* Remove a decoração padrão do link */
+  cursor: pointer;
+}
+
+.category-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+</style>

@@ -3,12 +3,14 @@ export interface Product {
   name: string
   price: string
   image_path: string
-  category: {
-    name: string
-    description: string
-    id: number
-  }
+  category: Category
   image: string
   stock: number
   discounts?: []
+}
+
+export interface Category {
+  name: string
+  description: string
+  id: number
 }
