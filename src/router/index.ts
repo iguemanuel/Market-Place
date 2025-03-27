@@ -1,7 +1,9 @@
+import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from '@/store/authStore'
+
 import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import RegisterView from '@/views/RegisterView.vue'
-import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

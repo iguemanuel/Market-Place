@@ -8,11 +8,9 @@ import CarouselComponent from '@/components/Main/CarouselComponent.vue'
 import CardComponent from '@/components/Main/CardComponent.vue'
 
 import { produtos } from '@/services/httpService'
-import { Banners } from '@/db/Banners'
 import type { Product } from '@/interfaces/Product'
 
 const authStore = useAuthStore()
-const banners = Banners
 const products = ref<Product[]>([])
 const loading = ref(true)
 
@@ -47,7 +45,7 @@ const categorizedProducts = computed(() => {
 <template>
   <div class="w-full">
     <NavbarComponent />
-    <CarouselComponent :banner="banners" />
+    <CarouselComponent />
 
     <div class="container"></div>
     <div class="container-cards pl-4 pr-4">
