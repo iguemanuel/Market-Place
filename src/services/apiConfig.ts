@@ -31,4 +31,6 @@ const endPoints = {
   orders: 'orders',
 }
 
-export { api, endPoints }
+const url = 'http://34.138.111.33:8000'
+
+export { api, endPoints, url }

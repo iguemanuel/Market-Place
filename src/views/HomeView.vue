@@ -13,7 +13,7 @@ import CategoryComponent from '@/components/Main/CategoryComponent.vue'
 
 const authStore = useAuthStore()
 const products = ref<Product[]>([])
-const categories = ref<string[]>([])
+const categories = ref<Category[]>([])
 const loading = ref(true)
 
 onMounted(async () => {
@@ -21,12 +21,19 @@ onMounted(async () => {
     const data = await produtos()
     if (Array.isArray(data)) {
       products.value = data
-      categories.value = Array.from(new Set(data.map((product) => product.category?.name)))
+      categories.value = Array.from(
+        new Map(
+          data
+            .filter((product) => product.category)
+            .map((product) => [product.category.id, product.category]),
+        ).values(),
+      )
     }
   } catch (error) {
     console.error('Erro ao carregar os produtos:', error)
   } finally {
     loading.value = false
+    console.log(categories.value)
   }
 })
 
@@ -52,7 +59,7 @@ const categorizedProducts = computed(() => {
     <div>
       <h2 class="text-2xl font-bold">Categorias</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        <div v-for="category in categories" :key="category" class="mb-4">
+        <div v-for="category in categories" :key="category.id" class="mb-4">
           <CategoryComponent :category="category" />
         </div>
       </div>

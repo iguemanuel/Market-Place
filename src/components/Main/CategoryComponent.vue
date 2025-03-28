@@ -1,28 +1,38 @@
 <script setup lang="ts">
 import { defineProps } from 'vue'
+import { url } from '@/services/apiConfig'
+
+const baseURL = url
 
 const props = defineProps<{
-  category: string
+  category: {
+    id: number
+    name: string
+    image_path: string
+  }
 }>()
+console.log(baseURL + props.category.image_path)
+console.log(props.category)
 </script>
-
 <template>
-  <!-- Envolvendo a div inteira com o link -->
-  <a :href="'#' + props.category" class="card-category">
+  <a :href="'#' + props.category.name" class="card-category">
     <div>
-      <h2 class="category-title">{{ props.category }}</h2>
+      <img :src="baseURL + props.category.image_path" alt="Imagem da categoria" />
+    </div>
+    <div>
+      <h2 class="category-title">{{ props.category.name }}</h2>
     </div>
   </a>
 </template>
 
 <style scoped>
 .card-category {
-  display: block; /* Faz o link ocupar o espaço da div inteira */
+  display: block;
   padding: 1rem;
   border: 1px solid #e2e8f0;
   border-radius: 0.5rem;
   background-color: #f7fafc;
-  text-decoration: none; /* Remove a decoração padrão do link */
+  text-decoration: none;
   cursor: pointer;
 }
 

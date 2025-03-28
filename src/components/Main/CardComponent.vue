@@ -1,25 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import type { Product } from '@/interfaces/Product'
 
 const baseURL = 'http://34.138.111.33:8000'
-
-interface Discount {
-  percentage?: number
-}
-
-interface Category {
-  name: string
-  description: string
-}
-
-interface Product {
-  name: string
-  price: string
-  image_path: string
-  stock: number
-  category: Category
-  discounts?: Discount[]
-}
 
 const props = defineProps<{ product: Product }>()
 
@@ -30,7 +13,7 @@ const formatCurrency = (value: number) =>
 
 const formattedPrice = computed(() => {
   const price = parseFloat(props.product.price)
-  if (hasDiscount.value && props.product.discounts) {
+  if (hasDiscount.value && props.product.discounts?.length) {
     const discount = props.product.discounts[0].percentage || 0
     return formatCurrency(price * (1 - discount / 100))
   }
@@ -55,10 +38,8 @@ const originalPrice = computed(() => formatCurrency(parseFloat(props.product.pri
 
     <div class="p-4">
       <h2 class="text-2xl font-bold text-gray-800 truncate">{{ product.name }}</h2>
-
       <p class="text-sm text-gray-500 mt-1">Categoria: {{ product.category.name }}</p>
 
-      <!-- Preço -->
       <div class="flex items-center gap-2 mt-2">
         <p class="text-lg font-semibold text-gray-900">{{ formattedPrice }}</p>
         <p v-if="hasDiscount" class="text-sm text-red-500 line-through">{{ originalPrice }}</p>

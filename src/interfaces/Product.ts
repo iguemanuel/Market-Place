@@ -1,16 +1,20 @@
+export interface Discount {
+  percentage?: number
+}
+
+export interface Category {
+  id: number
+  name: string
+  description: string
+  image_path: string
+}
+
 export interface Product {
   id: number
   name: string
   price: string
   image_path: string
-  category: Category
-  image: string
   stock: number
-  discounts?: []
-}
-
-export interface Category {
-  name: string
-  description: string
-  id: number
+  category: Category
+  discounts?: Discount[]
 }
