@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: 'http://34.138.111.33:8000/',
+  baseURL: 'http://35.196.79.227:8000/',
 })
 
 const endPoints = {
@@ -31,6 +31,6 @@ const endPoints = {
   orders: 'orders',
 }
 
-const url = 'http://34.138.111.33:8000'
+const url = 'http://35.196.79.227:8000/'
 
 export { api, endPoints, url }
