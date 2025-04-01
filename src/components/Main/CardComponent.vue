@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
+import { ShoppingCart, Heart } from 'lucide-vue-next'
 import type { Product } from '@/interfaces/Product'
+import { url } from '@/services/apiConfig'
 
-const baseURL = 'http://34.138.111.33:8000'
-
+const baseURL = url
 const props = defineProps<{ product: Product }>()
-
 const hasDiscount = computed(() => (props.product.discounts ?? []).length > 0)
+const isFavorited = computed(() => false)
 
 const formatCurrency = (value: number) =>
   value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
@@ -21,19 +22,22 @@ const formattedPrice = computed(() => {
 })
 
 const originalPrice = computed(() => formatCurrency(parseFloat(props.product.price)))
+
+function descriptionTruncate(description: string) {
+  if (!description) {
+    return 'Sem descrição'
+  }
+  return description.length > 100 ? `${description.slice(0, 100)}...` : description
+}
 </script>
 
 <template>
   <div class="max-w-sm rounded-lg overflow-hidden shadow-lg bg-white border border-gray-200">
-    <div
-      v-if="hasDiscount"
-      class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded"
-    >
-      Desconto
-    </div>
-
-    <div class="w-full bg-gray-100 hover:bg-gray-200 transition">
+    <div class="w-full bg-gray-300 hover:bg-gray-200 transition relative">
       <img :src="baseURL + product.image_path" alt="Produto" class="w-full h-52 object-cover" />
+      <button class="absolute top-2 right-2" @click="isFavorited = !isFavorited">
+        <Heart class="text-gray-800 cursor-pointer" :fill="isFavorited ? '#1e2939' : 'none'" />
+      </button>
     </div>
 
     <div class="p-4">
@@ -49,14 +53,16 @@ const originalPrice = computed(() => formatCurrency(parseFloat(props.product.pri
         <span class="font-medium">Estoque:</span> {{ product.stock }} disponível
       </p>
 
-      <p class="text-sm text-gray-400 mt-2">{{ product.category.description }}</p>
+      <p class="text-sm text-gray-400 mt-2">
+        {{ descriptionTruncate(product.category?.description ?? '') }}
+      </p>
     </div>
 
     <div class="flex justify-between p-4">
       <button
-        class="bg-slate-800 text-white rounded-md px-4 py-2 text-sm hover:bg-slate-600 transition"
+        class="bg-gray-800 text-gray-700 rounded-md px-4 py-2 text-sm hover:bg-gray-400 transition"
       >
-        Adicionar ao Carrinho
+        <ShoppingCart class="w-6 h-6 text-white" />
       </button>
       <button
         class="bg-gray-300 text-gray-700 rounded-md px-4 py-2 text-sm hover:bg-gray-400 transition"

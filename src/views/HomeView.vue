@@ -13,7 +13,6 @@ import CategoryComponent from '@/components/Main/CategoryComponent.vue'
 const authStore = useAuthStore()
 const products = ref<Product[]>([])
 const categories = ref<Category[]>([])
-const loading = ref(true)
 
 onMounted(async () => {
   try {
@@ -31,7 +30,6 @@ onMounted(async () => {
   } catch (error) {
     console.error('Erro ao carregar os produtos:', error)
   } finally {
-    loading.value = false
   }
 })
 
@@ -53,22 +51,23 @@ const categorizedProducts = computed(() => {
 <template>
   <div class="w-full">
     <CarouselComponent />
-    <div>
-      <h2 class="text-2xl font-bold">Categorias</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        <div v-for="category in categories" :key="category.id" class="mb-4">
-          <CategoryComponent :category="category" />
+    <div class="container mx-auto px-16 py-8">
+      <div>
+        <h2 class="text-2xl font-bold">Categorias</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div v-for="category in categories" :key="category.id" class="mb-4">
+            <CategoryComponent :category="category" />
+          </div>
+        </div>
+      </div>
+
+      <div v-for="(items, category) in categorizedProducts" :key="category" :id="category">
+        <h2>{{ category }}</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <CardComponent v-for="product in items" :key="product.id" :product="product" />
         </div>
       </div>
     </div>
-
-    <div v-for="(items, category) in categorizedProducts" :key="category" :id="category">
-      <h2>{{ category }}</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        <CardComponent v-for="product in items" :key="product.id" :product="product" />
-      </div>
-    </div>
-
     <FooterComponent />
   </div>
 </template>

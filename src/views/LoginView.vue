@@ -27,7 +27,7 @@ const handleLogin = async () => {
         user: response.userData,
       })
       toast.success('Login efetuado com sucesso!')
-      router.push('/')
+      router.push('/dashboard')
     }
 
     console.log(authStore.user)
