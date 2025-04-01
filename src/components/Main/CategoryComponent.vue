@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps } from 'vue'
+import { computed } from 'vue'
 import { url } from '@/services/apiConfig'
 
 const baseURL = url
@@ -8,35 +8,44 @@ const props = defineProps<{
   category: {
     id: number
     name: string
-    image_path: string
   }
 }>()
+
+const categoryLink = computed(() => `#${props.category.name}`)
 </script>
+
 <template>
-  <a :href="'#' + props.category.name" class="card-category">
-    <div>
-      <img :src="baseURL + props.category.image_path" alt="Imagem da categoria" />
-    </div>
-    <div>
-      <h2 class="category-title">{{ props.category.name }}</h2>
-    </div>
+  <a :href="categoryLink" class="card-category">
+    <p class="category-title">{{ props.category.name }}</p>
   </a>
 </template>
 
 <style scoped>
 .card-category {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 1rem;
   border: 1px solid #e2e8f0;
   border-radius: 0.5rem;
-  background-color: #f7fafc;
+  background-color: #1e293b; /* Azul escuro melhorado */
   text-decoration: none;
   cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
+}
+
+.card-category:hover {
+  background-color: #334155; /* Um tom mais claro no hover */
+  transform: translateY(-2px);
 }
 
 .category-title {
+  color: white;
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-weight: bold;
+  text-align: center;
 }
 </style>

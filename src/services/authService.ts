@@ -23,3 +23,16 @@ export const register = async (user: User) => {
     console.error('Erro ao fazer cadastro ' + error)
   }
 }
+
+export const getUser = async (token: String) => {
+  try {
+    const response = await api.get(endPoints.users, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    return response.data
+  } catch (error) {
+    console.error('Erro ao buscar usuário ' + error)
+  }
+}

@@ -46,7 +46,7 @@ function descriptionTruncate(description: string) {
 
       <div class="flex items-center gap-2 mt-2">
         <p class="text-lg font-semibold text-gray-900">{{ formattedPrice }}</p>
-        <p v-if="hasDiscount" class="text-sm text-red-500 line-through">{{ originalPrice }}</p>
+        <p v-if="hasDiscount" class="text-sm text-green-700 line-through">{{ originalPrice }}</p>
       </div>
 
       <p class="text-sm text-gray-500 mt-1">
@@ -60,14 +60,14 @@ function descriptionTruncate(description: string) {
 
     <div class="flex justify-between p-4">
       <button
-        class="bg-gray-800 text-gray-700 rounded-md px-4 py-2 text-sm hover:bg-gray-400 transition"
-      >
-        <ShoppingCart class="w-6 h-6 text-white" />
-      </button>
-      <button
         class="bg-gray-300 text-gray-700 rounded-md px-4 py-2 text-sm hover:bg-gray-400 transition"
       >
         Detalhes
+      </button>
+      <button
+        class="cursor-pointer bg-gray-800 text-gray-700 rounded-md px-4 py-2 text-sm hover:bg-gray-400 transition"
+      >
+        <ShoppingCart class="w-6 h-6 text-white" />
       </button>
     </div>
   </div>
