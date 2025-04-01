@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { RouterView } from 'vue-router'
+import { RouterView, useRoute } from 'vue-router'
 import { useAuthStore } from './store/authStore'
+import NavbarComponent from './components/Header/NavbarComponent.vue'
+import { computed } from 'vue'
 
 const authStore = useAuthStore()
 </script>
 
 <template>
   <div class="w-full min-h-screen">
+    <NavbarComponent />
     <RouterView />
   </div>
 </template>

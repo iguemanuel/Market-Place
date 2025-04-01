@@ -11,8 +11,6 @@ const props = defineProps<{
     image_path: string
   }
 }>()
-console.log(baseURL + props.category.image_path)
-console.log(props.category)
 </script>
 <template>
   <a :href="'#' + props.category.name" class="card-category">

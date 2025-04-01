@@ -3,7 +3,6 @@ import { computed, onMounted, ref } from 'vue'
 import { useAuthStore } from '@/store/authStore'
 
 import FooterComponent from '@/components/Footer/FooterComponent.vue'
-import NavbarComponent from '@/components/Header/NavbarComponent.vue'
 import CarouselComponent from '@/components/Main/CarouselComponent.vue'
 import CardComponent from '@/components/Main/CardComponent.vue'
 
@@ -33,7 +32,6 @@ onMounted(async () => {
     console.error('Erro ao carregar os produtos:', error)
   } finally {
     loading.value = false
-    console.log(categories.value)
   }
 })
 
@@ -54,7 +52,6 @@ const categorizedProducts = computed(() => {
 
 <template>
   <div class="w-full">
-    <NavbarComponent />
     <CarouselComponent />
     <div>
       <h2 class="text-2xl font-bold">Categorias</h2>

@@ -1,5 +1,23 @@
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { RouterLink, useRoute } from 'vue-router'
+import { Store, User, ShoppingBasket, Heart, Search, Menu } from 'lucide-vue-next'
+
+// Controle do menu mobile
+const menuOpen = ref(false)
+const toggleMenu = () => {
+  menuOpen.value = !menuOpen.value
+}
+
+const route = useRoute()
+
+const ocultNavbar = computed(() => {
+  return route.name === 'Login' || route.name === 'Register'
+})
+</script>
 <template>
   <nav
+    v-if="!ocultNavbar"
     class="flex justify-between gap-10 items-center p-4 bg-white text-black w-full font-sans px-16"
   >
     <!-- Logo -->
@@ -26,14 +44,18 @@
     <div class="hidden md:flex space-x-4 gap-3">
       <Heart class="cursor-pointer hover:text-gray-600" />
       <ShoppingBasket class="cursor-pointer hover:text-gray-600" />
-      <User class="cursor-pointer hover:text-gray-600" />
+      <RouterLink to="/dashboard">
+        <User class="cursor-pointer hover:text-gray-600" />
+      </RouterLink>
     </div>
 
     <!-- Menu Mobile -->
     <div class="md:hidden flex gap-3 space-x-4">
       <Heart class="cursor-pointer hover:text-gray-600" />
       <ShoppingBasket class="cursor-pointer hover:text-gray-600" />
-      <User class="cursor-pointer hover:text-gray-600" />
+      <RouterLink to="/dashboard">
+        <User class="cursor-pointer hover:text-gray-600" />
+      </RouterLink>
     </div>
 
     <div
@@ -48,15 +70,3 @@
     </div>
   </nav>
 </template>
-
-<script setup lang="ts">
-import { ref } from 'vue'
-import { RouterLink } from 'vue-router'
-import { Store, User, ShoppingBasket, Heart, Search, Menu } from 'lucide-vue-next'
-
-// Controle do menu mobile
-const menuOpen = ref(false)
-const toggleMenu = () => {
-  menuOpen.value = !menuOpen.value
-}
-</script>

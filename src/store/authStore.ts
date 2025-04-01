@@ -12,5 +12,11 @@ export const useAuthStore = defineStore('auth', {
       this.user = payload.user
       this.token = payload.token
     },
+    clearUser() {
+      this.user = {} as User
+      this.token = ''
+    },
   },
+
+  persist: true,
 })
