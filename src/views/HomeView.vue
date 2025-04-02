@@ -54,7 +54,7 @@ const categorizedProducts = computed(() => {
     <div class="container mx-auto px-16 py-8">
       <div>
         <h2 class="text-3xl text-center !mb-8 !font-extrabold">Categorias</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
           <div v-for="category in categories" :key="category.id" class="mb-4">
             <CategoryComponent :category="category" />
           </div>

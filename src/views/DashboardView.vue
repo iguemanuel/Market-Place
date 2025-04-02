@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import { getUser } from '@/services/authService'
 import { useAuthStore } from '@/store/authStore'
-import { onMounted, ref } from 'vue'
-import { url } from '@/services/apiConfig'
+import { onMounted, ref, shallowRef, defineAsyncComponent } from 'vue'
 import type { User } from '@/interfaces/Auth.ts'
 import SidebarComponent from '@/components/Main/SidebarComponent.vue'
 
-const baseURL = url
-const authStore = useAuthStore()
+const componentsMap: Record<string, any> = {
+  profile: defineAsyncComponent(() => import('@/components/Main/PerfilComponent.vue')),
+}
 
+const activeComponent = shallowRef<any | null>(null)
+
+const authStore = useAuthStore()
 const user = ref<User>({
   id: 0,
   name: '',
@@ -21,15 +24,28 @@ const user = ref<User>({
 onMounted(async () => {
   if (authStore.token) {
     user.value = await getUser(authStore.token)
-    console.log(user.value)
   } else {
     console.error('Nenhum token encontrado')
   }
 })
+
+const selectComponent = (key: string) => {
+  activeComponent.value = componentsMap[key] || null
+}
 </script>
 
 <template>
-  <div class="container h-screen flex">
-    <SidebarComponent :email="user.email" :name="user.name" :image="user.image_path" />
+  <div class="h-screen flex">
+    <SidebarComponent
+      :email="user.email"
+      :name="user.name"
+      :image="user.image_path"
+      @selectComponent="selectComponent"
+    />
+
+    <div class="flex-1 p-6">
+      <component v-if="activeComponent" :is="activeComponent" />
+      <p v-else class="text-gray-500">Selecione uma opção no menu.</p>
+    </div>
   </div>
 </template>

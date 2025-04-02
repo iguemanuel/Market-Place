@@ -12,6 +12,7 @@ const menuItens = [
   { iconName: 'Favoritos', icon: Heart, key: 'favorites' },
 ]
 
+defineEmits(['selectComponent'])
 const router = useRouter()
 const authStore = useAuthStore()
 
@@ -62,6 +63,7 @@ const logout = () => {
       <button
         v-for="item in menuItens"
         :key="item.key"
+        @click="$emit('selectComponent', item.key)"
         class="flex gap-2 cursor-pointer items-center w-full h-10 rounded-md px-3 text-sm font-medium transition hover:bg-gray-100"
       >
         <component :is="item.icon" class="mr-3 h-5 w-5" />
@@ -71,7 +73,7 @@ const logout = () => {
 
     <div class="p-4">
       <button
-        class="flex cursor-pointer items-center w-full h-10 rounded-md bg-red-500 text-white px-3 text-sm font-medium hover:bg-red-600"
+        class="flex gap-2 cursor-pointer items-center w-full h-10 rounded-md bg-red-500 text-white px-3 text-sm font-medium hover:bg-red-600"
         @click="logout()"
         route
       >
