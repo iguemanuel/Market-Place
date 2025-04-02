@@ -12,7 +12,7 @@ const toggleMenu = () => {
 const route = useRoute()
 
 const ocultNavbar = computed(() => {
-  return route.name === 'Login' || route.name === 'Register'
+  return route.name === 'Login' || route.name === 'Register' || route.name === 'Dashboard'
 })
 </script>
 <template>
