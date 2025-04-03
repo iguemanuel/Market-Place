@@ -2,11 +2,12 @@
 import { getUser } from '@/services/authService'
 import { useAuthStore } from '@/store/authStore'
 import { onMounted, ref, shallowRef, defineAsyncComponent } from 'vue'
-import type { User } from '@/interfaces/Auth.ts'
+import type { User } from '@/interfaces/User'
 import SidebarComponent from '@/components/Main/SidebarComponent.vue'
 
 const componentsMap: Record<string, any> = {
   profile: defineAsyncComponent(() => import('@/components/Main/PerfilComponent.vue')),
+  address: defineAsyncComponent(() => import('@/components/Main/AddressForm.vue')),
 }
 
 const activeComponent = shallowRef<any | null>(null)
@@ -43,7 +44,7 @@ const selectComponent = (key: string) => {
       @selectComponent="selectComponent"
     />
 
-    <div class="flex-1 p-6">
+    <div class="flex-1 flex justify-center items-center p-6">
       <component v-if="activeComponent" :is="activeComponent" />
       <p v-else class="text-gray-500">Selecione uma opção no menu.</p>
     </div>
