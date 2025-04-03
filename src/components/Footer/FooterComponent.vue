@@ -1,3 +1,8 @@
+<script setup lang="ts">
+import { RouterLink } from 'vue-router'
+import { FacebookIcon, Twitter, Instagram } from 'lucide-vue-next'
+</script>
+
 <template>
   <footer class="bg-white w-full">
     <div class="flex justify-center">
@@ -49,8 +54,3 @@
     </div>
   </footer>
 </template>
-
-<script setup lang="ts">
-import { RouterLink } from 'vue-router'
-import { FacebookIcon, Twitter, Instagram } from 'lucide-vue-next'
-</script>

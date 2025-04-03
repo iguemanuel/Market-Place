@@ -3,6 +3,7 @@ import { RouterView, useRoute } from 'vue-router'
 import { useAuthStore } from './store/authStore'
 import NavbarComponent from './components/Header/NavbarComponent.vue'
 import { computed } from 'vue'
+import FooterComponent from './components/Footer/FooterComponent.vue'
 
 const authStore = useAuthStore()
 </script>
@@ -11,6 +12,7 @@ const authStore = useAuthStore()
   <div class="w-full min-h-screen">
     <NavbarComponent />
     <RouterView />
+    <FooterComponent />
   </div>
 </template>
 

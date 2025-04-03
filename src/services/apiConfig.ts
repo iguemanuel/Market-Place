@@ -13,7 +13,7 @@ const endPoints = {
   users: 'users/me',
   userModerator: 'users/create-moderator',
   // Address
-  address: 'address',
+  address: 'addresses',
   // Categories
   categories: 'categories',
   // Disounts
