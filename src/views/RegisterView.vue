@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { register } from '@/services/authService.ts'
 import { useToast } from 'vue-toastification'
 import { RouterLink } from 'vue-router'
-import type { User } from '@/interfaces/Auth.ts'
+import type { User } from '@/interfaces/User'
 
 const toast = useToast()
 

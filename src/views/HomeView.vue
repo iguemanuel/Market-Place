@@ -2,13 +2,13 @@
 import { computed, onMounted, ref } from 'vue'
 import { useAuthStore } from '@/store/authStore'
 
-import FooterComponent from '@/components/Footer/FooterComponent.vue'
 import CarouselComponent from '@/components/Main/CarouselComponent.vue'
-import CardComponent from '@/components/Main/CardComponent.vue'
-
-import { produtos } from '@/services/httpService'
-import type { Product, Category } from '@/interfaces/Product'
 import CategoryComponent from '@/components/Main/CategoryComponent.vue'
+import CardComponent from '@/components/Main/CardComponent.vue'
+import FooterComponent from '@/components/Footer/FooterComponent.vue'
+
+import { getProdutos } from '@/services/httpService'
+import type { Product, Category } from '@/interfaces/Product'
 
 const authStore = useAuthStore()
 const products = ref<Product[]>([])
@@ -16,7 +16,7 @@ const categories = ref<Category[]>([])
 
 onMounted(async () => {
   try {
-    const data = await produtos()
+    const data = await getProdutos()
     if (Array.isArray(data)) {
       products.value = data
       categories.value = Array.from(

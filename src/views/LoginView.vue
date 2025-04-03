@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { login } from '@/services/authService.ts'
-import type { User } from '@/interfaces/Auth.ts'
+import type { User } from '@/interfaces/User'
 import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useAuthStore } from '@/store/authStore'
