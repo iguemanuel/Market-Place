@@ -12,6 +12,7 @@ const endPoints = {
   // Users
   users: 'users/me',
   userModerator: 'users/create-moderator',
+  userImg: 'users/image',
   // Address
   address: 'addresses',
   // Categories

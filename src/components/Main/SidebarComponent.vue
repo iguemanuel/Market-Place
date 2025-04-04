@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { defineProps, defineEmits } from 'vue'
-import { Home, ShoppingCart, User, Package, Heart, LogOut, X } from 'lucide-vue-next'
+import { Home, ShoppingCart, User, Package, Heart, LogOut, X, Shield } from 'lucide-vue-next'
 import { useAuthStore } from '@/store/authStore'
 import { useRouter } from 'vue-router'
+import { url } from '@/services/apiConfig'
+
+const baseUrl = url
 
 const menuItens = [
   { iconName: 'Perfil', icon: User, key: 'profile' },
@@ -51,7 +54,7 @@ const logout = () => {
 
     <div class="flex items-center gap-3 px-4 py-4 border-b border-gray-200">
       <div class="relative h-10 w-10 overflow-hidden rounded-full bg-gray-300">
-        <img :src="image" alt="User" class="h-full w-full object-cover" />
+        <img :src="baseUrl + image" alt="User" class="h-full w-full object-cover" />
       </div>
       <div>
         <p class="text-sm font-medium">{{ name }}</p>
@@ -69,11 +72,19 @@ const logout = () => {
         <component :is="item.icon" class="mr-3 h-5 w-5" />
         {{ item.iconName }}
       </button>
+      <button
+        v-if="authStore.user.role === 'Moderador' || authStore.user.role === 'ADMIN'"
+        @click="$emit('selectComponent', 'moderator')"
+        class="flex gap-2 cursor-pointer items-center w-full h-10 rounded-md px-3 text-sm font-medium transition hover:bg-blue-100 text-blue-500"
+      >
+        <Shield class="mr-3 h-5 w-5" />
+        Moderador
+      </button>
     </nav>
 
     <div class="p-4">
       <button
-        class="flex gap-2 cursor-pointer items-center w-full h-10 rounded-md bg-red-500 text-white px-3 text-sm font-medium hover:bg-red-600"
+        class="flex gap-2 cursor-pointer items-center w-full h-10 rounded-md bg-gray-500 text-white px-3 text-sm font-medium hover:bg-gray-600"
         @click="logout()"
         route
       >

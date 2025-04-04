@@ -30,6 +30,7 @@ const handleRegister = async () => {
   } catch (error) {
     console.error('Erro ao registrar:', error)
   }
+  console.log(user.value)
 }
 </script>
 

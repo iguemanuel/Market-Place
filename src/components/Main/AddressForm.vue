@@ -115,7 +115,7 @@ onMounted(fetchAddresses)
       >
         <div class="flex items-center justify-between">
           <div>
-            <h3 class="text-lg font-semibold">{{ address.street }} {{ address.number }}</h3>
+            <h3 class="text-lg font-semibold">{{ address.street }} - {{ address.number }}</h3>
             <p class="text-sm text-gray-500">
               CEP {{ address.zip }} - {{ address.state }} - {{ address.city }}
             </p>
