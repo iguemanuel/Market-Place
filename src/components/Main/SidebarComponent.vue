@@ -6,7 +6,7 @@ import { useRouter } from 'vue-router'
 
 const menuItens = [
   { iconName: 'Perfil', icon: User, key: 'profile' },
-  { iconName: 'Endereço', icon: Home, key: 'address' },
+  { iconName: 'Endereços', icon: Home, key: 'address' },
   { iconName: 'Carrinho', icon: ShoppingCart, key: 'cart' },
   { iconName: 'Pedidos', icon: Package, key: 'orders' },
   { iconName: 'Favoritos', icon: Heart, key: 'favorites' },

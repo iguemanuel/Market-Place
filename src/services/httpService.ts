@@ -53,3 +53,16 @@ export const updateAddress = async (address: UserAddress) => {
     console.error('Erro ao atualizar endereço ' + error)
   }
 }
+
+export const deleteAddress = async (addressId: number) => {
+  try {
+    const authStore = useAuthStore()
+
+    const response = await api.delete(`${endPoints.address}/${addressId}`, {
+      headers: { Authorization: `Bearer ${authStore.token}` },
+    })
+    return response.data
+  } catch (error) {
+    console.error('Erro ao deletar endereço ' + error)
+  }
+}

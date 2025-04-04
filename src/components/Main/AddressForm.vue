@@ -3,8 +3,10 @@ import { ref, watch, onMounted } from 'vue'
 import { MoreVertical, Plus, X, Check, Edit, Trash } from 'lucide-vue-next'
 import type { UserAddress } from '@/interfaces/User'
 import { getAddressByCep } from '@/services/cepService'
-import { getAddress, createAddress, updateAddress } from '@/services/httpService'
+import { getAddress, createAddress, updateAddress, deleteAddress } from '@/services/httpService'
+import { useToast } from 'vue-toastification'
 
+const toast = useToast()
 const addresses = ref<UserAddress[]>([])
 const isModalOpen = ref(false)
 const openMenuId = ref<number | null>(null) // Controla o menu aberto
@@ -52,7 +54,7 @@ const saveAddress = async () => {
     if (!newAddress.value.id) {
       savedAddress = await createAddress(newAddress.value)
       addresses.value.push(savedAddress)
-      console.log('Endereço criado:', savedAddress)
+      toast.success('Endereço criado com sucesso!')
     } else {
       savedAddress = await updateAddress(newAddress.value)
       const index = addresses.value.findIndex((addr) => addr.id === savedAddress.id)
@@ -60,12 +62,26 @@ const saveAddress = async () => {
       if (index !== -1) {
         addresses.value[index] = savedAddress
       }
-      console.log('Endereço atualizado:', savedAddress)
+      toast.success('Endereço atualizado com sucesso!')
     }
 
     closeModal()
   } catch (error) {
     console.error('Erro ao salvar endereço:', error)
+    toast.error('Erro ao salvar endereço')
+  }
+}
+
+const removeAddress = async (id: number) => {
+  if (id) {
+    try {
+      await deleteAddress(id)
+      addresses.value = addresses.value.filter((addr) => addr.id !== id)
+      toast.success('Endereço excluído com sucesso!')
+      console.log('Endereço excluído:', id)
+    } catch (error) {
+      console.error('Erro ao excluir endereço:', error)
+    }
   }
 }
 
@@ -84,10 +100,6 @@ const toggleMenu = (id: number) => {
   openMenuId.value = openMenuId.value === id ? null : id
 }
 
-const closeMenu = () => {
-  openMenuId.value = null
-}
-
 onMounted(fetchAddresses)
 </script>
 
@@ -99,7 +111,7 @@ onMounted(fetchAddresses)
       <div
         v-for="address in addresses"
         :key="address.id"
-        class="relative rounded-lg border bg-white shadow-sm p-4 !mt-5"
+        class="relative rounded-lg bg-white shadow-sm p-4 !mt-5"
       >
         <div class="flex items-center justify-between">
           <div>
@@ -109,28 +121,27 @@ onMounted(fetchAddresses)
             </p>
           </div>
 
-          <!-- Botão de opções -->
           <button
             @click="toggleMenu(address.id)"
-            class="text-gray-500 hover:text-gray-700 relative"
+            class="cursor-pointer text-gray-500 hover:text-gray-700 relative"
           >
             <MoreVertical class="w-5 h-5" />
           </button>
 
-          <!-- Menu Dropdown -->
           <div
             v-if="openMenuId === address.id"
-            class="absolute right-4 top-12 bg-white shadow-lg rounded-lg border w-36 z-10"
-            v-click-outside="closeMenu"
+            class="cursor-pointer absolute right-1 top-12 bg-white shadow-lg rounded-lg w-36 z-10"
+            @click="() => toggleMenu(address.id)"
           >
             <button
               @click="openModal(address)"
-              class="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              class="cursor-pointer w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
             >
               <Edit class="w-4 h-4" /> Editar
             </button>
             <button
-              class="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+              @click="removeAddress(address.id)"
+              class="cursor-pointer w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
             >
               <Trash class="w-4 h-4" /> Excluir
             </button>
@@ -147,12 +158,8 @@ onMounted(fetchAddresses)
       Adicionar endereço
     </button>
 
-    <!-- Modal -->
-    <div
-      v-if="isModalOpen"
-      class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
-    >
-      <div class="bg-white rounded-lg shadow-lg p-6 max-w-lg w-full">
+    <div v-if="isModalOpen" class="modal-background">
+      <div class="modal-content">
         <div class="flex justify-between items-center mb-4">
           <h2 class="text-xl font-semibold">Adicionar Endereço</h2>
           <button @click="closeModal" class="text-gray-600 hover:text-gray-900">
@@ -185,11 +192,17 @@ onMounted(fetchAddresses)
           </div>
         </div>
 
-        <div class="flex justify-end gap-2 mt-4">
-          <button @click="closeModal" class="btn-secondary flex items-center gap-1">
+        <div class="flex justify-end gap-2 !mt-4">
+          <button
+            @click="closeModal"
+            class="px-4 py-2 rounded-sm text-gray-800 cursor-pointer bg-gray-200 hover:bg-gray-300 duration-300 flex items-center gap-1"
+          >
             <X class="w-4 h-4" /> Cancelar
           </button>
-          <button @click="saveAddress" class="btn-primary flex items-center gap-1">
+          <button
+            @click="saveAddress"
+            class="px-4 py-2 rounded-sm text-white cursor-pointer bg-gray-700 flex items-center gap-1 hover:bg-gray-800 duration-300"
+          >
             <Check class="w-4 h-4" /> Salvar
           </button>
         </div>
@@ -205,16 +218,20 @@ onMounted(fetchAddresses)
   border: 1px solid #ccc;
   border-radius: 6px;
 }
-.btn-primary {
-  background-color: #3b82f6;
-  color: white;
-  padding: 8px 16px;
-  border-radius: 6px;
+
+.modal-background {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
 }
-.btn-secondary {
-  background-color: #e5e7eb;
-  color: #374151;
-  padding: 8px 16px;
-  border-radius: 6px;
+
+.modal-content {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 24px;
 }
 </style>
