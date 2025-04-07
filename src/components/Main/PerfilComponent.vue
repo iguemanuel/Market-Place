@@ -128,7 +128,6 @@ const triggerFileInput = () => {
         </div>
       </div>
 
-      <!-- User Info Section -->
       <div class="bg-gray-50 rounded-lg p-5 space-y-4">
         <div class="flex items-start gap-3">
           <UserIcon class="h-5 w-5 text-gray-500 mt-0.5" />

@@ -7,7 +7,8 @@ import SidebarComponent from '@/components/Main/SidebarComponent.vue'
 
 const componentsMap: Record<string, any> = {
   profile: defineAsyncComponent(() => import('@/components/Main/PerfilComponent.vue')),
-  address: defineAsyncComponent(() => import('@/components/Main/AddressForm.vue')),
+  address: defineAsyncComponent(() => import('@/components/Main/AddressFormComponent.vue')),
+  moderator: defineAsyncComponent(() => import('@/components/Moderator/ModeratorComponent.vue')),
 }
 
 const activeComponent = shallowRef<any | null>(null)
