@@ -9,6 +9,8 @@ export interface Category {
   image_path: string
 }
 
+export type NewCategory = Omit<Category, 'id'>
+
 export interface Product {
   id: number
   name: string
