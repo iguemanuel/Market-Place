@@ -4,8 +4,9 @@ import { CandlestickChart, Package, Tag, UserPen } from 'lucide-vue-next'
 
 import CardModeratorComponent from './CardModeratorComponent.vue'
 import CategoryManagerComponent from './CategoryManagerComponent.vue'
+import ProductManagerComponet from './ProductManagerComponet.vue'
 
-const currentSection = ref<'home' | 'categories'>('home')
+const currentSection = ref<'home' | 'categories' | 'products'>('home')
 </script>
 
 <template>
@@ -13,7 +14,7 @@ const currentSection = ref<'home' | 'categories'>('home')
     <button
       v-if="currentSection !== 'home'"
       @click="currentSection = 'home'"
-      class="mb-4 text-blue-600 hover:underline text-sm"
+      class="cursor-pointer mb-4 text-blue-600 hover:underline text-sm"
     >
       ← Voltar para o painel
     </button>
@@ -30,6 +31,7 @@ const currentSection = ref<'home' | 'categories'>('home')
           title="Gerenciar produtos"
           subtitle="Organize os produtos disponíveis na loja."
           description="Adicione, edite ou remova produtos da loja. Você pode gerenciar preços, descrições e imagens dos produtos."
+          @click="currentSection = 'products'"
         />
 
         <CardModeratorComponent
@@ -57,5 +59,6 @@ const currentSection = ref<'home' | 'categories'>('home')
     </div>
 
     <CategoryManagerComponent v-if="currentSection === 'categories'" />
+    <ProductManagerComponet v-if="currentSection === 'products'" />
   </div>
 </template>
