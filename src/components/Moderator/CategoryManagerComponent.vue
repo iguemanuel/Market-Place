@@ -7,6 +7,7 @@ import {
   deleteCategories,
   updateCategories,
 } from '@/services/categoriesService'
+import { Check, Eraser, Trash, Trash2 } from 'lucide-vue-next'
 
 const category = ref<Category>({
   id: 0,
@@ -29,7 +30,7 @@ onMounted(async () => {
 
 watch(selectedCategoryId, (id) => {
   if (id !== null) {
-    const selected = categories.value.find((cat) => cat.id === id)
+    const selected = categories.value.find((cat) => cat.id === Number(id))
     if (selected) {
       category.value = { ...selected }
       isEditing.value = true
@@ -82,74 +83,85 @@ const resetForm = () => {
 </script>
 
 <template>
-  <div class="grid md:grid-cols-2 gap-5">
-    <div class="bg-white p-6 rounded-lg shadow-md max-w-xl mx-auto">
-      <h2 class="text-lg font-semibold mb-4">Criar/Editar Categorias</h2>
+  <div class="grid">
+    <div
+      class="bg-white p-6 rounded-lg shadow-md max-w-xl mx-auto flex flex-col justify-between min-h-[400px] min-w-[500px]"
+    >
+      <div class="flex-grow">
+        <h2 class="text-lg font-semibold mb-4">Criar/Editar Categorias</h2>
 
-      <form @submit.prevent="handleSubmit">
-        <div class="mb-4">
-          <label for="categoryName" class="block text-sm font-medium text-gray-600"
-            >Nome da categoria</label
-          >
-          <input
-            type="text"
-            id="categoryName"
-            v-model="category.name"
+        <div class="flex-grow">
+          <h2 class="text-md font-semibold !text-gray-700 mb-4">
+            Selecione uma categoria para editar ou crie-a:
+          </h2>
+
+          <h3 class="font-semibold mb-4">Categorias cadastradas:</h3>
+          <select
+            v-model="selectedCategoryId"
             class="w-full mt-1 p-2 border border-gray-300 rounded-md"
-          />
+          >
+            <option value="" disabled>Selecione uma categoria</option>
+            <option v-for="category in categories" :key="category.id" :value="category.id">
+              {{ category.name }}
+            </option>
+          </select>
         </div>
 
-        <div class="mb-4">
-          <label for="categoryDescription" class="block text-sm font-medium text-gray-600"
-            >Descrição</label
-          >
-          <textarea
-            id="categoryDescription"
-            v-model="category.description"
-            class="w-full mt-1 p-2 border border-gray-300 rounded-md"
-          ></textarea>
-        </div>
+        <form @submit.prevent="handleSubmit">
+          <div class="mb-4">
+            <label for="categoryName" class="block text-sm font-medium text-gray-600">
+              Nome da categoria
+            </label>
+            <input
+              type="text"
+              id="categoryName"
+              v-model="category.name"
+              class="w-full mt-1 p-2 border border-gray-300 rounded-md"
+            />
+          </div>
 
-        <div class="flex gap-3">
-          <button
-            type="submit"
-            class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
-          >
-            {{ isEditing ? 'Atualizar' : 'Salvar' }}
-          </button>
+          <div class="mb-4">
+            <label for="categoryDescription" class="block text-sm font-medium text-gray-600">
+              Descrição
+            </label>
+            <textarea
+              id="categoryDescription"
+              v-model="category.description"
+              class="w-full mt-1 p-2 border border-gray-300 rounded-md"
+            ></textarea>
+          </div>
+        </form>
+      </div>
 
-          <button
-            type="button"
-            @click="resetForm"
-            class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition"
-          >
-            Limpar
-          </button>
-        </div>
-      </form>
-    </div>
+      <div class="flex flex-col sm:flex-row gap-3 mt-6">
+        <button
+          type="submit"
+          @click="handleSubmit"
+          class="cursor-pointer flex-1 flex items-center justify-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700 transition-all duration-200"
+        >
+          <Check />
+          {{ isEditing ? 'Atualizar' : 'Salvar' }}
+        </button>
 
-    <div class="bg-white p-6 rounded-lg shadow-md max-w-xl mx-auto">
-      <h2 class="text-lg font-semibold mb-4">Selecionar Categoria:</h2>
+        <button
+          type="button"
+          @click="resetForm"
+          class="cursor-pointer flex-1 flex items-center justify-center gap-2 bg-gray-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-gray-600 transition-all duration-200"
+        >
+          <Eraser />
+          Limpar
+        </button>
 
-      <h3 class="font-semibold mb-4">Categorias cadastradas:</h3>
-      <select
-        v-model="selectedCategoryId"
-        class="w-full mt-1 p-2 border border-gray-300 rounded-md"
-      >
-        <option value="" disabled>Selecione uma categoria</option>
-        <option v-for="category in categories" :key="category.id" :value="category.id">
-          {{ category.name }}
-        </option>
-      </select>
-
-      <button
-        @click="selectedCategoryId !== null && deleteCategory(selectedCategoryId)"
-        :disabled="!selectedCategoryId"
-        class="!mt-5 bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition disabled:opacity-50"
-      >
-        Deletar Categoria
-      </button>
+        <!-- Botão Deletar -->
+        <button
+          @click="selectedCategoryId && deleteCategory(Number(selectedCategoryId))"
+          :disabled="!selectedCategoryId"
+          class="cursor-pointer flex-1 flex items-center justify-center gap-2 bg-red-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-red-700 transition-all duration-200 disabled:opacity-50"
+        >
+          <Trash2 />
+          Deletar
+        </button>
+      </div>
     </div>
   </div>
 </template>
