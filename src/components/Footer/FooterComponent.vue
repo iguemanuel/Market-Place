@@ -1,10 +1,17 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router'
+import { RouterLink, useRoute } from 'vue-router'
 import { FacebookIcon, Twitter, Instagram } from 'lucide-vue-next'
+import { computed } from 'vue'
+
+const route = useRoute()
+
+const ocultSidebar = computed(() => {
+  return route.name === 'Login' || route.name === 'Register' || route.name === 'Dashboard'
+})
 </script>
 
 <template>
-  <footer class="bg-white w-full">
+  <footer v-if="!ocultSidebar" class="bg-white w-full">
     <div class="flex justify-center">
       <div class="container mx-auto py-8 flex justify-center text-center">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8 w-full max-w-6xl">
