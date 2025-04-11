@@ -22,6 +22,11 @@ export interface Product {
   discounts?: Discount[]
 }
 
-export type NewProduct = Omit<Product, 'id' | 'category'> & {
-  categoryId: number
+export interface NewProduct {
+  name: string
+  description?: string | null
+  price: number
+  stock: number
+  category: Category | null
+  image?: string
 }
