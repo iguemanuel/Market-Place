@@ -2,13 +2,16 @@
 import { onMounted, ref } from 'vue'
 import { X, Check } from 'lucide-vue-next'
 import { createProduct } from '@/services/productsService'
+import { useToast } from 'vue-toastification'
 import type { Product, NewProduct, Category } from '@/interfaces/Product'
 
+const toast = useToast()
 const selectedFile = ref<File | null>(null)
 const imageUrl = ref<string | null>(null)
 
 const props = defineProps<{
   categories: Category[]
+  products?: Product[]
 }>()
 
 const emit = defineEmits<{
@@ -18,7 +21,7 @@ const emit = defineEmits<{
 
 const newProduct = ref<NewProduct>({
   name: '',
-  price: 0,
+  price: '',
   stock: 0,
   category_id: 0,
   description: '',
@@ -41,11 +44,12 @@ const saveProduct = async () => {
       const productCreated = await createProduct(productData, null)
       console.log('Produto criado sem imagem:', productCreated)
       emit('save', productCreated)
+      toast.success('Produto criado com sucesso!')
       closeModal()
     }
   } catch (error) {
     console.error('Erro ao salvar produto:', error)
-    alert('Erro ao salvar produto. Verifique os dados e tente novamente.')
+    toast.error('Erro ao criar produto. Tente novamente.')
   }
 }
 

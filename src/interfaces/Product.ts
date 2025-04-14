@@ -25,7 +25,7 @@ export interface Product {
 export interface NewProduct {
   name: string
   description?: string
-  price: number
+  price: string
   stock: number
   category_id: number
   image?: string

@@ -80,7 +80,7 @@ function nameTruncate(name: string) {
         </div>
 
         <button
-          class="rounded-md bg-blue-600 py-2 px-4 border border-transparent text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-blue-700 active:bg-blue-700 disabled:pointer-events-none disabled:opacity-50"
+          class="cursor-pointer rounded-md bg-blue-600 py-2 px-4 border border-transparent text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-blue-700 active:bg-blue-700 disabled:pointer-events-none disabled:opacity-50"
           type="button"
           @click="modal()"
         >

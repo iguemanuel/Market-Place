@@ -72,6 +72,5 @@ const categorizedProducts = computed(() => {
         </div>
       </div>
     </div>
-    <FooterComponent />
   </div>
 </template>
