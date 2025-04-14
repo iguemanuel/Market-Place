@@ -10,15 +10,28 @@ const getAuthHeaders = () => {
   }
 }
 
-export const createProduct = async (product: NewProduct) => {
+export const createProduct = async (product: NewProduct, imageFile: File | null) => {
   try {
-    const response = await api.post(endPoints.products, product, {
+    const formData = new FormData()
+
+    formData.append('name', product.name)
+    formData.append('price', product.price.toString())
+    formData.append('stock', product.stock.toString())
+    formData.append('category_id', product.category_id.toString())
+    formData.append('description', (product.description ?? '').toString())
+
+    if (imageFile) {
+      formData.append('image', imageFile)
+    }
+
+    const response = await api.post(endPoints.products, formData, {
       headers: {
         ...getAuthHeaders(),
         Accept: 'multipart/form-data',
         'Content-Type': 'multipart/form-data',
       },
     })
+
     return response.data
   } catch (error) {
     console.error('Error creating product:', error)

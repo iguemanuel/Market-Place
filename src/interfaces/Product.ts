@@ -24,9 +24,9 @@ export interface Product {
 
 export interface NewProduct {
   name: string
-  description?: string | null
+  description?: string
   price: number
   stock: number
-  category: Category | null
+  category_id: number
   image?: string
 }

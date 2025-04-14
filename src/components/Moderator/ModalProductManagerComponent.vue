@@ -4,6 +4,9 @@ import { X, Check } from 'lucide-vue-next'
 import { createProduct } from '@/services/productsService'
 import type { Product, NewProduct, Category } from '@/interfaces/Product'
 
+const selectedFile = ref<File | null>(null)
+const imageUrl = ref<string | null>(null)
+
 const props = defineProps<{
   categories: Category[]
 }>()
@@ -17,7 +20,7 @@ const newProduct = ref<NewProduct>({
   name: '',
   price: 0,
   stock: 0,
-  category: null,
+  category_id: 0,
   description: '',
   image: '',
 })
@@ -25,15 +28,37 @@ const newProduct = ref<NewProduct>({
 function closeModal() {
   emit('close')
 }
-async function saveProduct() {
+const saveProduct = async () => {
   try {
-    const productCreated = await createProduct(newProduct.value)
-    emit('save', productCreated)
-    closeModal()
+    const productData = { ...newProduct.value }
+
+    if (selectedFile.value) {
+      const productCreated = await createProduct(productData, selectedFile.value)
+      console.log('Produto criado:', productCreated)
+      emit('save', productCreated)
+      closeModal()
+    } else {
+      const productCreated = await createProduct(productData, null)
+      console.log('Produto criado sem imagem:', productCreated)
+      emit('save', productCreated)
+      closeModal()
+    }
   } catch (error) {
     console.error('Erro ao salvar produto:', error)
     alert('Erro ao salvar produto. Verifique os dados e tente novamente.')
   }
+}
+
+const handleFileChange = (event: Event) => {
+  const target = event.target as HTMLInputElement
+  const file = target.files?.[0]
+  if (!file) return
+
+  selectedFile.value = file
+
+  const formData = new FormData()
+  formData.append('image', file)
+  imageUrl.value = URL.createObjectURL(file)
 }
 
 onMounted(() => {
@@ -44,7 +69,6 @@ onMounted(() => {
 <template>
   <div class="fixed inset-0 z-[9999] bg-black/50 flex items-center justify-center">
     <div class="bg-white rounded-lg p-6 w-full max-w-lg shadow-lg">
-      <!-- Cabeçalho -->
       <div class="flex justify-between items-center mb-4">
         <h2 class="text-xl font-semibold">Adicionar Produto</h2>
         <button @click="closeModal" class="text-gray-600 hover:text-gray-900">
@@ -65,11 +89,11 @@ onMounted(() => {
         <div class="space-y-2">
           <label class="text-sm font-medium">Categoria</label>
           <select
-            v-model="newProduct.category"
+            v-model="newProduct.category_id"
             class="w-full border border-gray-300 px-3 py-2 rounded"
           >
-            <option disabled value="">Selecione uma categoria</option>
-            <option v-for="cat in props.categories" :key="cat.id" :value="cat">
+            <option disabled value="0">Selecione uma categoria</option>
+            <option v-for="cat in props.categories" :key="cat.id" :value="cat.id">
               {{ cat.name }}
             </option>
           </select>
@@ -107,24 +131,30 @@ onMounted(() => {
         </div>
 
         <div class="space-y-2">
-          <label class="text-sm font-medium">URL da Imagem</label>
-          <input
-            v-model="newProduct.image"
-            placeholder="https://exemplo.com/imagem.jpg"
-            class="w-full border border-gray-300 px-3 py-2 rounded"
-          />
+          <label class="text-sm font-medium text-gray-700">Imagem do Produto</label>
+
+          <div
+            class="relative border border-dashed border-gray-300 rounded-lg p-4 flex items-center justify-center bg-gray-50 hover:border-blue-400 transition"
+          >
+            <input
+              type="file"
+              accept="image/*"
+              @change="handleFileChange"
+              class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+            />
+            <span class="text-gray-500 text-sm">Clique para enviar uma imagem</span>
+          </div>
         </div>
 
-        <div v-if="newProduct.image" class="mt-4">
-          <label class="text-sm font-medium block mb-2">Prévia da imagem:</label>
-          <img
-            :src="newProduct.image"
-            alt="Prévia da imagem"
-            class="max-h-40 object-contain rounded border"
-          />
+        <div v-if="imageUrl" class="mt-4">
+          <label class="text-sm font-medium block mb-2 text-gray-700">Prévia da imagem</label>
+          <div
+            class="h-15 border overflow-hidden bg-white shadow-sm flex items-center justify-center"
+          >
+            <img :src="imageUrl" alt="Prévia da imagem" class="max-h-full object-contain" />
+          </div>
         </div>
       </div>
-
       <div class="flex justify-end gap-2 !mt-6">
         <button
           @click="closeModal"

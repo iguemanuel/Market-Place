@@ -54,6 +54,7 @@ const handleFileChange = async (event: Event) => {
   try {
     const response = await uploadUserImage(file)
     user.value.image_path = response.image_path
+    console.log('Imagem enviada com sucesso:', response)
     toast.success('Imagem enviada com sucesso!')
   } catch (error) {
     toast.error('Erro ao enviar a imagem.')
