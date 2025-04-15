@@ -20,8 +20,6 @@ const ocultNavbar = computed(() => {
     v-if="!ocultNavbar"
     class="flex justify-between gap-10 items-center p-4 bg-white text-black w-full font-sans px-16"
   >
-    <!-- Logo -->
-
     <button class="md:hidden text-black hover:scale-110" @click="toggleMenu">
       <Menu class="hover:text-gray-600" />
     </button>
@@ -43,7 +41,9 @@ const ocultNavbar = computed(() => {
 
     <div class="hidden md:flex space-x-4 gap-3">
       <Heart class="cursor-pointer hover:text-gray-600" />
-      <ShoppingBasket class="cursor-pointer hover:text-gray-600" />
+      <RouterLink to="/cart">
+        <ShoppingBasket class="cursor-pointer hover:text-gray-600" />
+      </RouterLink>
       <RouterLink to="/dashboard">
         <User class="cursor-pointer hover:text-gray-600" />
       </RouterLink>
@@ -52,6 +52,9 @@ const ocultNavbar = computed(() => {
     <!-- Menu Mobile -->
     <div class="md:hidden flex gap-3 space-x-4">
       <Heart class="cursor-pointer hover:text-gray-600" />
+      <RouterLink to="/cart">
+        <ShoppingBasket class="cursor-pointer hover:text-gray-600" />
+      </RouterLink>
       <ShoppingBasket class="cursor-pointer hover:text-gray-600" />
       <RouterLink to="/dashboard">
         <User class="cursor-pointer hover:text-gray-600" />
